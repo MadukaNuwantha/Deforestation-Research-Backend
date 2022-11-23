@@ -4,9 +4,9 @@ import base64
 from PIL import Image
 from io import BytesIO
 
-MODEL = torch.hub.load('./yolov5', 'custom',path='./models/model.pt', source='local')
+MODEL = torch.hub.load('./yolov5', 'custom',path='./models/waterbodymodel.pt', source='local')
 
-async def predictImage(imageFile):
+async def predictWaterBodyImage(imageFile):
     processedImage = processImage(imageFile)
     predictedImage = predict(processedImage)
     convertedImage = encodeImage(predictedImage)

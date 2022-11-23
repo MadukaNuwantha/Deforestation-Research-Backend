@@ -18,4 +18,3 @@ tensorboard>=2.4.1
 pandas>=1.1.4
 seaborn>=0.11.0
 python-multipart>=0.0.5
-aiofiles=>22.1.0

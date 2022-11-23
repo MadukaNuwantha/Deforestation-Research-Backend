@@ -1,9 +1,7 @@
 from fastapi import FastAPI, File
 from controllers.water_body_detection import *
+from controllers.forest_patch_detection import *
 from fastapi import FastAPI
-from starlette.responses import Response
-import io
-from PIL import Image
 
 app = FastAPI()
 
@@ -12,7 +10,14 @@ app = FastAPI()
 async def root():
     return 'Hello World'
 
+
 @app.post('/predict/waterbody')
 async def predictWaterBody(file: bytes = File(...)):
-    result = await predictImage(file)
+    result = await predictWaterBodyImage(file)
+    return result
+
+
+@app.post('/predict/forestpatch')
+async def predictForestPatch(file: bytes = File(...)):
+    result = await predictForestPatchImage(file)
     return result
