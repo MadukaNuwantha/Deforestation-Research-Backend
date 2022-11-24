@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File
+from fastapi.middleware.cors import CORSMiddleware
 from controllers.water_body_detection import *
 from controllers.forest_patch_detection import *
 from controllers.wild_fire_detection import *
@@ -6,6 +7,17 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/')
 async def root():
