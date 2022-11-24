@@ -13,7 +13,7 @@ async def predictForestPatchImage(imageFile):
     convertedImage = convertImage(prediction)
     predictionDetails = predictedDetails(prediction)
     encodedImage = encodeImage(convertedImage)
-    return encodedImage
+    return [encodedImage , predictionDetails]
 
 
 def processImage(binary_image, max_size=255):
