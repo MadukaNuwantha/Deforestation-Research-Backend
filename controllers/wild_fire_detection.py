@@ -33,7 +33,6 @@ def predict(processedImage):
 def convertImage(results):
     renderedImage = results.render()
     convertedImage = Image.fromarray(renderedImage[0]).convert("RGB")
-    convertedImage.show()
     return convertedImage
 
 def predictedDetails(results):
