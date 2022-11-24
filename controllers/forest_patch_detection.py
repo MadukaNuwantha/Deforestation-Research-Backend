@@ -1,3 +1,4 @@
+import json
 import torch
 import io
 import base64
@@ -8,9 +9,12 @@ MODEL = torch.hub.load('./yolov5', 'custom',path='./models/forestpatchmodel.pt',
 
 async def predictForestPatchImage(imageFile):
     processedImage = processImage(imageFile)
-    predictedImage = predict(processedImage)
-    convertedImage = encodeImage(predictedImage)
-    return convertedImage
+    prediction = predict(processedImage)
+    convertedImage = convertImage(prediction)
+    predictionDetails = predictedDetails(prediction)
+    encodedImage = encodeImage(convertedImage)
+    return encodedImage
+
 
 def processImage(binary_image, max_size=255):
     input_image = Image.open(io.BytesIO(binary_image)).convert("RGB")
@@ -24,10 +28,18 @@ def processImage(binary_image, max_size=255):
 
 def predict(processedImage):
     results = MODEL(processedImage)
+    return results
+
+def convertImage(results):
     renderedImage = results.render()
     convertedImage = Image.fromarray(renderedImage[0]).convert("RGB")
     convertedImage.show()
     return convertedImage
+
+def predictedDetails(results):
+    predictionDetails = results.pandas().xyxy[0].to_json(orient="records")
+    predictionDetails = json.loads(predictionDetails)
+    return predictionDetails
 
 def encodeImage(convertedImage):
     buffered = BytesIO()
@@ -37,9 +49,3 @@ def encodeImage(convertedImage):
     encodedImage = "data:image/png;base64," + base64.b64encode(imageByte).decode()
     return encodedImage
 
-# def predict(processedImage):
-#     results = MODEL(processedImage)
-#     results.print()
-#     detect_res = results.pandas().xyxy[0].to_json(orient="records")
-#     detect_res = json.loads(detect_res)
-#     return detect_res
